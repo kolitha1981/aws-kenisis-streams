@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.amazonaws.kenisis.streams</groupId>
-  <artifactId>demo</artifactId>
+  <artifactId>aws-kenisis-data-handler</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
