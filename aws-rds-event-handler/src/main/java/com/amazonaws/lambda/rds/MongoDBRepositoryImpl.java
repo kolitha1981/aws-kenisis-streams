@@ -25,7 +25,6 @@ public class MongoDBRepositoryImpl implements MongoDBRepository {
 						+ System.getenv(EnvironmentConstants.ENV_MONGO_DB_PORT).trim());
 		Builder mongoOptionsBuilder = MongoClientOptions.builder().connectTimeout(3000);
 		mongoClient = new MongoClient(new MongoClientURI(connectionString.trim(), mongoOptionsBuilder));
-
 	}
 
 	@Override
