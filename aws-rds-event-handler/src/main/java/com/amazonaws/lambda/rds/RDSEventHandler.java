@@ -1,22 +1,25 @@
 package com.amazonaws.lambda.rds;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import com.amazonaws.services.lambda.runtime.events.SNSEvent.SNS;
 
-public class RDSEventHandler implements RequestStreamHandler {
+public class RDSEventHandler implements RequestHandler<SNSEvent, String> {
 
-    @Override
-    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-
-        // TODO: Implement your stream handler. See https://docs.aws.amazon.com/lambda/latest/dg/java-handler-io-type-stream.html for more information.
-        // This demo implementation capitalizes the characters from the input stream.
-        int letter = 0;
-        while((letter = input.read()) >= 0) {
-            output.write(Character.toUpperCase(letter));
-        }
-    }
+	@Override
+	public String handleRequest(SNSEvent event, Context context) {
+		final LambdaLogger lambdaLogger = context.getLogger();
+		lambdaLogger.log("@@@@@@@Handling SNS event ........");
+		if (event.getRecords() != null && !event.getRecords().isEmpty()) {
+			final SNS snsMessage = event.getRecords().get(0).getSNS();
+			if (snsMessage != null) {
+				String message = snsMessage.getMessage();
+				lambdaLogger.log("@@@Message:" + message);
+			}
+		}
+		return null;
+	}
 
 }
