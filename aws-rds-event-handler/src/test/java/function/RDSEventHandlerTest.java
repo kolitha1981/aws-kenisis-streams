@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.rds;
+package function;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,6 +8,8 @@ import java.io.OutputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import function.RDSEventHandler;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.

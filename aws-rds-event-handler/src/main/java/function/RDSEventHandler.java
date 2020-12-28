@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.rds;
+package function;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -7,6 +7,10 @@ import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent.SNS;
 
 public class RDSEventHandler implements RequestHandler<SNSEvent, String> {
+	
+	public RDSEventHandler() {
+
+	}
 
 	@Override
 	public String handleRequest(SNSEvent event, Context context) {
