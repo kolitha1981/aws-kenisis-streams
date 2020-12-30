@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.kenesis;
+package com.amazonaws.lambda.kenesis.model;
 
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;

@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.kenesis;
+package com.amazonaws.lambda.kenesis.model;
 
 import java.io.IOException;
 import java.io.InputStream;
