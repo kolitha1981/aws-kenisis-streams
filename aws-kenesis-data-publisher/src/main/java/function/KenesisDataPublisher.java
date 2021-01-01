@@ -54,6 +54,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 		JsonObject headerJson = new JsonObject();
 		headerJson.addProperty(WebConstants.RESPONSE_HEADER_CUSTOM_VALUE, "my custom header value");
 		final JsonObject responseBody = new JsonObject();
+		lambdaLogger.log("@@@@@Generating records to be pushed to the stream ....... ");
 		for (int i = 0; i < 10; i++) {
 			final Message message = new Message.MessageBuilder(Long.valueOf(i), "Test payload count :" + i)
 					.addCreatedBy("Admin").addCreatedOn(new Date()).build();
@@ -63,19 +64,35 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 			putRecordsRequestEntryList.add(putRecordsRequestEntry);
 		}
 		putRecordsRequest.setRecords(putRecordsRequestEntryList);
-		PutRecordsResult putRecordsResult = amazonKinesisClient.putRecords(putRecordsRequest);
-		if (putRecordsResult.getFailedRecordCount() > 0) {
-			final List<String> errorSequenceNumbers = putRecordsResult.getRecords().stream()
-					.filter(putRecordsResultEntry -> putRecordsResultEntry.getErrorCode() != null)
-					.map(putRecordsResultEntry -> putRecordsResultEntry.getSequenceNumber())
-					.collect(Collectors.toList());
-			responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
-					String.join(",", errorSequenceNumbers));
+		lambdaLogger.log("@@@@@Called records putRecordsRequest.setRecords() on the set of records .....");
+		PutRecordsResult putRecordsResult =  null;
+		try {
+			putRecordsResult = amazonKinesisClient.putRecords(putRecordsRequest);
+			lambdaLogger.log("@@@@@Called records putRecordsRequest.putRecords() on the set of records .....");
+		}catch(Exception e)
+		{
+			lambdaLogger.log("Error sending record to kenesis: "+ e.getMessage());
+			responseBody.addProperty(WebConstants.RESPONSE_BODY_KENSIS_ERROR,
+					e.getMessage());
 			responseJson.addProperty(WebConstants.RESPONSE_STATUS, 500);
-		} else {
-			responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
-					Collections.emptyList().toString());
-			responseJson.addProperty(WebConstants.RESPONSE_STATUS, 200);
+		}
+		lambdaLogger.log("@@@@@Result:"+ putRecordsResult);
+		if(putRecordsResult != null)
+		{
+			if (putRecordsResult.getFailedRecordCount() > 0) {
+				lambdaLogger.log("@@@@@Failed records are existing");
+				final List<String> errorSequenceNumbers = putRecordsResult.getRecords().stream()
+						.filter(putRecordsResultEntry -> putRecordsResultEntry.getErrorCode() != null)
+						.map(putRecordsResultEntry -> putRecordsResultEntry.getSequenceNumber())
+						.collect(Collectors.toList());
+				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
+						String.join(",", errorSequenceNumbers));
+				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 500);
+			} else {
+				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
+						Collections.emptyList().toString());
+				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 200);
+			}
 		}
 		responseJson.add(WebConstants.RESPONSE_HEADERS, headerJson);
 		responseJson.addProperty(WebConstants.RESPONSE_BODY, responseBody.toString());
@@ -86,6 +103,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 
 	private void validateStream(AmazonKinesis kinesisClient, String streamName, LambdaLogger lambdaLogger) {
 		try {
+			lambdaLogger.log("@@@@@Started validating the stream ....... ");
 			DescribeStreamRequest describeStreamRequest = new DescribeStreamRequest().withStreamName(streamName);
 			DescribeStreamResult describeStreamResponse = kinesisClient.describeStream(describeStreamRequest);
 			if (!describeStreamResponse.getStreamDescription().getStreamStatus()
@@ -93,6 +111,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 				lambdaLogger.log("Stream " + streamName + " is not active. Please wait a few moments and try again.");
 				System.exit(1);
 			}
+			lambdaLogger.log("@@@@@Ended validating the stream ....... ");
 		} catch (Exception e) {
 			lambdaLogger.log("Error found while describing the stream " + streamName);
 			System.exit(1);

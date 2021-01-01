@@ -17,23 +17,23 @@ import com.persisstent.event.repository.MongoDbRepositoryImpl;
 
 public class KenesisDataSubscriber implements RequestHandler<KinesisEvent, String> {
 
-	private MongoDbRepository mongoDbRepository;
+	private static MongoDbRepository mongoDbRepository;
 
-	public KenesisDataSubscriber() {
-		this.mongoDbRepository = new MongoDbRepositoryImpl();
+	static  {
+		mongoDbRepository = new MongoDbRepositoryImpl();
 	}
 
 	@Override
 	public String handleRequest(KinesisEvent event, Context context) {
 		final LambdaLogger lambdaLogger = context.getLogger();
-		final List<Message> messagesToBeSaved = new ArrayList<Message>();
+		final List<Message> messagesToBeSaved = new ArrayList<>();
 		lambdaLogger.log("@@@@@@@@Started executing the function handleRequest() ........ ");
 		for (KinesisEventRecord record : event.getRecords()) {
 			String payload = String.valueOf(Base64.decode(record.getKinesis().getData().array()));
 			lambdaLogger.log("@@@@@@@@Payload: " + payload);
 			messagesToBeSaved.add(new Gson().fromJson(payload, Message.class));
 		}
-		final List<Message> savedMessages = this.mongoDbRepository.save(messagesToBeSaved, lambdaLogger);
+		final List<Message> savedMessages = mongoDbRepository.save(messagesToBeSaved, lambdaLogger);
 		final String messageIds = String.join(",", savedMessages.stream().map(message -> message.getMessageId().toString()).collect(Collectors.toList()));
 		lambdaLogger.log("@@@@@@@@Saved messages: " + messageIds);
 		return messageIds;
