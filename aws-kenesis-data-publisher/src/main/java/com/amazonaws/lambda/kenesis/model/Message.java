@@ -2,6 +2,7 @@ package com.amazonaws.lambda.kenesis.model;
 
 import java.util.Date;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class Message {
@@ -23,7 +24,7 @@ public class Message {
 		messageJson.addProperty("messageId", messageId);
 		messageJson.addProperty("payload", payload);
 		messageJson.addProperty("createdBy", createdBy);
-		return messageJson.getAsString();
+		return new Gson().toJson(messageJson);
 	}
 
 	public static class MessageBuilder {

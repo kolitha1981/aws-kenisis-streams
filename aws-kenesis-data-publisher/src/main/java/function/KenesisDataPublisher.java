@@ -29,8 +29,6 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import software.amazon.awssdk.regions.Region;
-
 public class KenesisDataPublisher implements RequestStreamHandler {
 
 	private static String kenesisStreamName;
@@ -39,7 +37,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 	static {
 		kenesisStreamName = System.getenv(EnvironmentConstants.ENV_KENESIS_STREAM_NAME);
 		AmazonKinesisClientBuilder clientBuilder = AmazonKinesisClientBuilder.standard();
-		clientBuilder.setRegion(Region.US_EAST_1.toString());
+		clientBuilder.setRegion("us-east-1");
 		amazonKinesisClient = clientBuilder.build();
 	}
 
@@ -105,7 +103,10 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 		try {
 			lambdaLogger.log("@@@@@Started validating the stream ....... ");
 			DescribeStreamRequest describeStreamRequest = new DescribeStreamRequest().withStreamName(streamName);
+			lambdaLogger.log("@@@@@describeStreamRequest:"+ new Gson().toJson(describeStreamRequest));
 			DescribeStreamResult describeStreamResponse = kinesisClient.describeStream(describeStreamRequest);
+			lambdaLogger.log("@@@@@describeStreamResponse:"+ new Gson().toJson(describeStreamResponse));
+			lambdaLogger.log("@@@@@Started validating the stream ....... ");
 			if (!describeStreamResponse.getStreamDescription().getStreamStatus()
 					.equals(ApplicationConstants.KENSIS_STAREAM_ACTIVE_STATUS)) {
 				lambdaLogger.log("Stream " + streamName + " is not active. Please wait a few moments and try again.");
@@ -113,7 +114,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 			}
 			lambdaLogger.log("@@@@@Ended validating the stream ....... ");
 		} catch (Exception e) {
-			lambdaLogger.log("Error found while describing the stream " + streamName);
+			lambdaLogger.log("Error found while describing the stream " + e.getMessage());
 			System.exit(1);
 		}
 	}
