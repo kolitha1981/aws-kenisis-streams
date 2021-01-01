@@ -53,7 +53,7 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 		headerJson.addProperty(WebConstants.RESPONSE_HEADER_CUSTOM_VALUE, "my custom header value");
 		final JsonObject responseBody = new JsonObject();
 		lambdaLogger.log("@@@@@Generating records to be pushed to the stream ....... ");
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; ++i) {
 			final Message message = new Message.MessageBuilder(Long.valueOf(i), "Test payload count :" + i)
 					.addCreatedBy("Admin").addCreatedOn(new Date()).build();
 			final PutRecordsRequestEntry putRecordsRequestEntry = new PutRecordsRequestEntry();
@@ -76,22 +76,19 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 		}
 		lambdaLogger.log("@@@@@Result:"+ putRecordsResult);
 		if(putRecordsResult != null)
-		{
-			if (putRecordsResult.getFailedRecordCount() > 0) {
-				lambdaLogger.log("@@@@@Failed records are existing");
-				final List<String> errorSequenceNumbers = putRecordsResult.getRecords().stream()
-						.filter(putRecordsResultEntry -> putRecordsResultEntry.getErrorCode() != null)
-						.map(putRecordsResultEntry -> putRecordsResultEntry.getSequenceNumber())
-						.collect(Collectors.toList());
-				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
-						String.join(",", errorSequenceNumbers));
-				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 500);
-			} else {
+			if (putRecordsResult.getFailedRecordCount() <= 0) {
 				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
 						Collections.emptyList().toString());
 				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 200);
+			} else {
+				lambdaLogger.log("@@@@@Failed records are existing");
+				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
+						String.join(",", putRecordsResult.getRecords().stream()
+								.filter(putRecordsResultEntry -> putRecordsResultEntry.getErrorCode() != null)
+								.map(putRecordsResultEntry -> putRecordsResultEntry.getSequenceNumber())
+								.collect(Collectors.toList())));
+				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 500);
 			}
-		}
 		responseJson.add(WebConstants.RESPONSE_HEADERS, headerJson);
 		responseJson.addProperty(WebConstants.RESPONSE_BODY, responseBody.toString());
 		final OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
