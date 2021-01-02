@@ -115,5 +115,5 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 			System.exit(1);
 		}
 	}
-
+	
 }

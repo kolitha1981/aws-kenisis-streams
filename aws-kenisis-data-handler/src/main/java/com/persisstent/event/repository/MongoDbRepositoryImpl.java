@@ -26,21 +26,20 @@ public class MongoDbRepositoryImpl implements MongoDbRepository {
 	static {
 		mongoDBName = System.getenv(EnvironmentConstants.ENV_MONGODB_DATABASENAME).trim();
 		mongoDBCollectionName = System.getenv(EnvironmentConstants.ENV_MONGODB_COLLECTION_NAME).trim();
-		final String connectionString = String.format("mongodb://%s:%s@%s",
-				System.getenv(EnvironmentConstants.ENV_MONGODB_USERNAME).trim(),
-				System.getenv(EnvironmentConstants.ENV_MONGODB_PASSWORD).trim(),
-				System.getenv(EnvironmentConstants.ENV_MONGODB_ENDPOINT).trim() + ":"
-						+ System.getenv(EnvironmentConstants.ENV_MONGODB_PORT).trim());
-		mongoClient = new MongoClient(
-				new MongoClientURI(connectionString.trim(), MongoClientOptions.builder().connectTimeout(3000)));
+		mongoClient = new MongoClient(new MongoClientURI(
+				String.format("mongodb://%s:%s@%s", System.getenv(EnvironmentConstants.ENV_MONGODB_USERNAME).trim(),
+						System.getenv(EnvironmentConstants.ENV_MONGODB_PASSWORD).trim(),
+						System.getenv(EnvironmentConstants.ENV_MONGODB_ENDPOINT).trim() + ":"
+								+ System.getenv(EnvironmentConstants.ENV_MONGODB_PORT).trim())
+						.trim(),
+				MongoClientOptions.builder().connectTimeout(3000)));
 	}
 
 	@Override
 	public Message save(Message message, LambdaLogger lambdaLogger) {
 		this.lambdaLogger.log("@@@@Calling save()...........");
 		try {
-			MongoCollection<Document> colection = mongoClient.getDatabase(mongoDBName).getCollection(mongoDBCollectionName);
-			colection.insertOne(message.toDocument());
+			mongoClient.getDatabase(mongoDBName).getCollection(mongoDBCollectionName).insertOne(message.toDocument());
 			return message;
 		} catch (Exception e) {
 			this.lambdaLogger.log("@@@@Exception when saving message :" + e.getMessage());
