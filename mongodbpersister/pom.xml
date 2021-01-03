@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lambda.mongodb</groupId>
-	<artifactId>mongodbpersister</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>mongodbpersister</name>
+	<artifactId>mongodbpersister-v1</artifactId>
+	<version>0.0.3-SNAPSHOT</version>
+	<name>mongodbpersister-v1</name>
 	<description>Demo project  for mongo database </description>
 
 	<properties>
@@ -52,8 +52,21 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>				
 			</plugin>
+			<plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>
+                    <to>
+                       <tags>
+                         <tag>${project.artifactId}-${project.version}</tag>
+                       </tags>
+                       <image>registry.hub.docker.com/kolithadocker7/${project.artifactId}</image>
+                    </to>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
