@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public Message getById(Long messageid) {
 		return this.messageRepository.findById(messageid)
-				.orElseThrow(() -> new MessageNotFoundException("Message wth id :" + messageid + "not found."));
+				.orElseThrow(() -> new MessageNotFoundException("Message not found."));
 	}
 
 }

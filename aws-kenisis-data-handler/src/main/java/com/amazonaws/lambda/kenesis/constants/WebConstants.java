@@ -13,7 +13,7 @@ public class WebConstants {
 	public static final int FUNCTION_STATUS_ERROR = 500;
 	public static final int NUMBER_OF_MAX_CONNECTIONS_PER_ROUTE = 10;
 	public static final int TOTAL_NUMBER_OF_CONNECTIONS = 10;
-	public static final int DEFAULT_CONNECTION_KEEP_ALIVE_DURATION_IN_SECS = 5;
+	public static final int DEFAULT_CONNECTION_KEEP_ALIVE_DURATION_IN_SECS = 3;
 	public static final int HTTP_SOCKET_CONNECTION_TIMEOUT_IN_MILLS = 5000;
 
 }
