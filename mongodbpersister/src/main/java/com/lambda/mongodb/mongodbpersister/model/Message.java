@@ -2,11 +2,13 @@ package com.lambda.mongodb.mongodbpersister.model;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
 public class Message {
 	
+	@Id
 	private Long messageId;
 	private String payload;
 	private Date createdOn;

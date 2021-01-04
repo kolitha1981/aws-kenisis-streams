@@ -13,7 +13,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 @Configuration
 @EnableMongoRepositories(basePackages = "com.lambda.mongodb.mongodbpersister.dao")
-public class MessageRepositoryConfig extends AbstractMongoClientConfiguration{
+public class MessageRepositoryConfig extends AbstractMongoClientConfiguration {
 
 	@Value("${org.persistent.mongodb.database.name}")
 	private String databaseName;
