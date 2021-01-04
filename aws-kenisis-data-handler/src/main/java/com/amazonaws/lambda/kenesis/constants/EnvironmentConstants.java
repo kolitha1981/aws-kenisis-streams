@@ -5,12 +5,7 @@ public class EnvironmentConstants {
 	private EnvironmentConstants() {
 	}
 
-	public static final String ENV_MONGODB_ENDPOINT = "MONGODB_ENDPOINT";
-	public static final String ENV_MONGODB_PORT = "MONGODB_PORT";
-	public static final String ENV_MONGODB_USERNAME = "MONGODB_USERNAME";
-	public static final String ENV_MONGODB_DATABASENAME = "MONGODB_DATABASENAME";
-	public static final String ENV_MONGODB_PASSWORD = "MONGODB_PASSWORD";
-	public static final String ENV_MONGODB_COLLECTION_NAME = "MONGODB_COLLECTION_NAME";
-
+	public static final String ENV_MESSAGE_SERVICE_ENDPOINT_HOST = "MESSAGE_SERVICE_ENDPOINT_HOST";
+	public static final String ENV_MESSAGE_SERVICE_ENDPOINT_PORT = "MESSAGE_SERVICE_ENDPOINT_PORT";
 
 }

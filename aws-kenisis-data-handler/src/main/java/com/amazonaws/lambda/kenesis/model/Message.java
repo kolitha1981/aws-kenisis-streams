@@ -20,7 +20,7 @@ public class Message {
 		this.createdOn = createdOn;
 		this.createdBy = createdBy;
 	}
-	
+
 	public Long getMessageId() {
 		return messageId;
 	}
@@ -61,7 +61,7 @@ public class Message {
 		document.put("createdOn", createdOn.toString());
 		return new Document(document);
 	}
-	
+
 	public JsonObject toJson() {
 		final JsonObject messageJson = new JsonObject();
 		messageJson.addProperty("messageId", messageId);
@@ -69,6 +69,5 @@ public class Message {
 		messageJson.addProperty("createdBy", createdBy);
 		return messageJson;
 	}
-
 
 }

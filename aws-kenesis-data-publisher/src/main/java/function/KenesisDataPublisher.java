@@ -77,12 +77,12 @@ public class KenesisDataPublisher implements RequestStreamHandler {
 		lambdaLogger.log("@@@@@Result:"+ putRecordsResult);
 		if(putRecordsResult != null)
 			if (putRecordsResult.getFailedRecordCount() <= 0) {
-				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
+				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGS_FAILED,
 						Collections.emptyList().toString());
 				responseJson.addProperty(WebConstants.RESPONSE_STATUS, 200);
 			} else {
 				lambdaLogger.log("@@@@@Failed records are existing");
-				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGES_FAILED,
+				responseBody.addProperty(WebConstants.RESPONSE_BODY_PARAMETER_MESSAGS_FAILED,
 						String.join(",", putRecordsResult.getRecords().stream()
 								.filter(putRecordsResultEntry -> putRecordsResultEntry.getErrorCode() != null)
 								.map(putRecordsResultEntry -> putRecordsResultEntry.getSequenceNumber())
