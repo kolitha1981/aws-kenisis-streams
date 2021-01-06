@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.lambda.mongodb.mongodbpersister.config.MessageRepositoryConfig;
+import com.lambda.mongodb.mongodbpersister.constants.EnvironmentConstants;
 import com.lambda.mongodb.mongodbpersister.dao.MessageRepository;
 import com.lambda.mongodb.mongodbpersister.exception.MessageNotFoundException;
 import com.lambda.mongodb.mongodbpersister.model.Message;
@@ -101,6 +105,16 @@ public class MessageServiceTest {
 					MessageRepository.class);
 			mongoDbFactoryBean.setMongoOperations(template);
 			return mongoDbFactoryBean;
+		}
+		
+		@Bean
+		public MessageRepositoryConfig messageRepositoryConfig()
+		{
+			final Environment environment = Mockito.mock(Environment.class);
+			Mockito.doReturn("27107").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_PORT);
+			Mockito.doReturn("localhost").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_ENDPOINT);
+			Mockito.doReturn("messages").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_NAME);
+			return new MessageRepositoryConfig(environment);
 		}
 
 		@Bean

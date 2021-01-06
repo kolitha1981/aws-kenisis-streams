@@ -1,8 +1,6 @@
 package com.lambda.mongodb.mongodbpersister.controller;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.ErrorManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
