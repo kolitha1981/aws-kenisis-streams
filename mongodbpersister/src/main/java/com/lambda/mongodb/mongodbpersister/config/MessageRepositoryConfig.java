@@ -14,21 +14,17 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+
 @Configuration
 @EnableMongoRepositories(basePackages = "com.lambda.mongodb.mongodbpersister.dao")
 public class MessageRepositoryConfig extends AbstractMongoClientConfiguration {
 
+	@Value("${org.persistent.mongodb.database.name}")
 	private String databaseName;
 	@Value("${org.persistent.mongodb.endpoint}")
 	private String server;
+	@Value("${org.persistent.mongodb.port}")
 	private String serverPort;
-	
-	@Autowired	
-	public MessageRepositoryConfig(Environment environment) {
-		this.databaseName = environment.getProperty(EnvironmentConstants.ENV_MONGO_DB_NAME);
-		this.server = environment.getProperty(EnvironmentConstants.ENV_MONGO_DB_ENDPOINT);
-		this.serverPort = environment.getProperty(EnvironmentConstants.ENV_MONGO_DB_PORT);
-	}
 
 	@Override
 	protected String getDatabaseName() {
@@ -36,12 +32,12 @@ public class MessageRepositoryConfig extends AbstractMongoClientConfiguration {
 	}
 
 	@Override
-    public MongoClient mongoClient() {
-    	return MongoClients.create(MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(
-						MessageFormat.format("mongodb://{0}:{1}/{2}", 
-								new Object[] { server, serverPort, databaseName })))
-				.build());
-    }
-	
+	public MongoClient mongoClient() {
+		return  MongoClients
+				.create(MongoClientSettings
+						.builder().applyConnectionString(new ConnectionString(MessageFormat
+								.format("mongodb://{0}:{1}/{2}", new Object[] { server, serverPort, databaseName })))
+						.build());
+	}
+
 }

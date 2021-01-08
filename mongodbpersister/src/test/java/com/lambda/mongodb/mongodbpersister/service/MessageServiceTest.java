@@ -108,16 +108,6 @@ public class MessageServiceTest {
 		}
 		
 		@Bean
-		public MessageRepositoryConfig messageRepositoryConfig()
-		{
-			final Environment environment = Mockito.mock(Environment.class);
-			Mockito.doReturn("27107").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_PORT);
-			Mockito.doReturn("localhost").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_ENDPOINT);
-			Mockito.doReturn("messages").when(environment).getProperty(EnvironmentConstants.ENV_MONGO_DB_NAME);
-			return new MessageRepositoryConfig(environment);
-		}
-
-		@Bean
 		public MessageService messageService(MessageRepository messageRepository) {
 			return new MessageServiceImpl(messageRepository);
 		}
