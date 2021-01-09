@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.lambda.mongodb</groupId>
 	<artifactId>mongodbpersister-v1</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 	<name>mongodbpersister-v1</name>
 	<description>Demo project  for mongo database </description>
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lambda.mongodb.mongodbpersister.model.ErrorMessage;
+import com.lambda.mongodb.mongodbpersister.model.WebResponse;
 import com.lambda.mongodb.mongodbpersister.model.Message;
 import com.lambda.mongodb.mongodbpersister.service.MessageService;
 
@@ -29,18 +29,24 @@ public class MessageController {
 		try {
 			return new ResponseEntity<>(this.messageService.save(messages), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new WebResponse(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping(path = "/messages/{messageId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/messages/{messageId}",produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getById(@PathVariable("messageId") Long messageId) {
 		try {
 			return new ResponseEntity<>(this.messageService.getById(messageId), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new WebResponse(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping(path = "/health", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> health() {
+			return new ResponseEntity<>(new WebResponse("Server status is Ok"), HttpStatus.OK);
 	}
 
 }

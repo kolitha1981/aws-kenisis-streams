@@ -2,14 +2,11 @@ package com.lambda.mongodb.mongodbpersister.config;
 
 import java.text.MessageFormat;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import com.lambda.mongodb.mongodbpersister.constants.EnvironmentConstants;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
@@ -33,11 +30,9 @@ public class MessageRepositoryConfig extends AbstractMongoClientConfiguration {
 
 	@Override
 	public MongoClient mongoClient() {
-		return  MongoClients
-				.create(MongoClientSettings
-						.builder().applyConnectionString(new ConnectionString(MessageFormat
-								.format("mongodb://{0}:{1}/{2}", new Object[] { server, serverPort, databaseName })))
-						.build());
+		return MongoClients.create(MongoClientSettings.builder().applyConnectionString(new ConnectionString(MessageFormat
+				.format("mongodb://{0}:{1}/{2}?retryWrites=false", new Object[] { server, serverPort, databaseName })))
+				.build());
 	}
 
 }
