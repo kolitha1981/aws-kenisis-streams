@@ -2,8 +2,8 @@ package com.amazon.documentdb.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.amazon.documentdb.model.MessageValidator;
+import com.amazon.documentdb.model.MessageLog;
 
-public interface AuroraRepository extends CrudRepository<MessageValidator, Long> {
+public interface AuroraRepository extends CrudRepository<MessageLog, Long> {
 
 }

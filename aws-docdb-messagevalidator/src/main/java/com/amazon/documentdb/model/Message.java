@@ -2,11 +2,8 @@ package com.amazon.documentdb.model;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-
-
 public class Message {
-	
+
 	private Long messageId;
 	private String payload;
 	private Date createdOn;
@@ -35,6 +32,15 @@ public class Message {
 		return createdBy;
 	}
 
+	public MessageLog getLog() {
+		final MessageLog messageLog = new MessageLog();
+		messageLog.setMessageCreatedBy(getCreatedBy());
+		messageLog.setMessageCreatedOn(getCreatedOn());
+		messageLog.setMessagePayLoad(getPayload());
+		return messageLog;
+
+	}
+
 	@Override
 	public int hashCode() {
 		return 31 + ((messageId == null) ? 0 : messageId.hashCode());
@@ -54,6 +60,5 @@ public class Message {
 			return false;
 		return true;
 	}
-	
 
 }

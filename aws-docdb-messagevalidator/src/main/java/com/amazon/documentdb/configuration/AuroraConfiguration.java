@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.amazon.documentdb.repository")
-public class AuroraConfiguration {
-	
-	
+public class AuroraConfiguration {	
 
 }
