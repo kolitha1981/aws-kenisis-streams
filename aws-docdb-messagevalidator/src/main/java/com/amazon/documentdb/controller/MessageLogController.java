@@ -20,19 +20,19 @@ import com.amazon.documentdb.service.MessageLoggerService;
 public class MessageLogController {
 
 	@Autowired
-	private MessageLoggerService messageValidatorService;
+	private MessageLoggerService messageLogService;
 
 	@PostMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> save(@RequestBody Message message) {
-		final MessageLog messageLog = messageValidatorService.save(message);
+		final MessageLog messageLog = messageLogService.save(message);
 		return new ResponseEntity<>(messageLog, HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/messages/batch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> saveAll(@RequestBody List<Message> messages) {
-		final List<MessageLog> messageLogs = messageValidatorService.save(messages);
+		final List<MessageLog> messageLogs = messageLogService.save(messages);
 		return new ResponseEntity<>(messageLogs, HttpStatus.OK);
 	}
 
