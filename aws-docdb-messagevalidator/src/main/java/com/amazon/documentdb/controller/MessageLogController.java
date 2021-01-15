@@ -1,10 +1,13 @@
 package com.amazon.documentdb.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,16 +17,23 @@ import com.amazon.documentdb.model.MessageLog;
 import com.amazon.documentdb.service.MessageLoggerService;
 
 @RestController
-public class MessageValidationController {
+public class MessageLogController {
 
 	@Autowired
 	private MessageLoggerService messageValidatorService;
 
-	@GetMapping(path = "verification/{messageId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> checkValidity(@RequestBody Message message) {
+	public ResponseEntity<?> save(@RequestBody Message message) {
 		final MessageLog messageLog = messageValidatorService.save(message);
 		return new ResponseEntity<>(messageLog, HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/messages/batch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> saveAll(@RequestBody List<Message> messages) {
+		final List<MessageLog> messageLogs = messageValidatorService.save(messages);
+		return new ResponseEntity<>(messageLogs, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
