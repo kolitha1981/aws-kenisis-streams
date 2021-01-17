@@ -32,8 +32,8 @@ public class MessageDto {
 		return createdBy;
 	}
 
-	public MessageLog getLog() {
-		final MessageLog messageLog = new MessageLog();
+	public MessageLogDto getLog() {
+		final MessageLogDto messageLog = new MessageLogDto();
 		messageLog.setMessageCreatedBy(getCreatedBy());
 		messageLog.setMessageCreatedOn(getCreatedOn());
 		messageLog.setMessagePayLoad(getPayload());

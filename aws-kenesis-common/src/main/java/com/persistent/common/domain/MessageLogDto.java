@@ -2,7 +2,7 @@ package com.persistent.common.domain;
 
 import java.util.Date;
 
-public class MessageLog {
+public class MessageLogDto {
 	
 	private Long messageLogId;
 	private String messagePayLoad;
