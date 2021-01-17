@@ -22,6 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
 
 import com.lambda.mongodb.mongodbpersister.config.MessageRepositoryConfig;
 import com.lambda.mongodb.mongodbpersister.constants.EnvironmentConstants;
@@ -107,9 +108,12 @@ public class MessageServiceTest {
 			return mongoDbFactoryBean;
 		}
 		
+		
+		
 		@Bean
 		public MessageService messageService(MessageRepository messageRepository) {
-			return new MessageServiceImpl(messageRepository);
+			RestTemplate restTemplate =  Mockito.mock(RestTemplate.class);
+			return new MessageServiceImpl(messageRepository, restTemplate);
 		}
 
 		@Override
