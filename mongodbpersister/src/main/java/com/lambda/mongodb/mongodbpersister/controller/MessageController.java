@@ -3,6 +3,7 @@ package com.lambda.mongodb.mongodbpersister.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.lambda.mongodb.mongodbpersister.model.Message;
 import com.lambda.mongodb.mongodbpersister.service.MessageService;
 
 @RestController
+@EnableCircuitBreaker
 public class MessageController {
 
 	@Autowired

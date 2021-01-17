@@ -16,8 +16,6 @@ import com.lambda.mongodb.mongodbpersister.dao.MessageRepository;
 import com.lambda.mongodb.mongodbpersister.exception.MessageNotFoundException;
 import com.lambda.mongodb.mongodbpersister.exception.MessageProcessingFailedException;
 import com.lambda.mongodb.mongodbpersister.model.Message;
-import com.persistent.common.domain.MessageDto;
-import com.persistent.common.domain.MessageLogDto;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -38,7 +36,7 @@ public class MessageServiceImpl implements MessageService {
 		final List<Message> savedListOfMessages = this.messageRepository.saveAll(messages);
 		final HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-		final HttpEntity<List<Message>> messagerequestBody = new HttpEntity<List<Message>>(savedListOfMessages,
+		final HttpEntity<List<Message>> messagerequestBody = new HttpEntity<>(savedListOfMessages,
 				httpHeaders);
 		final String logEndPointURL = "http://" + logServiceName + "/messages/batch";
 		try {
