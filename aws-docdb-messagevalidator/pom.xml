@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.amazon.documentdb</groupId>
 	<artifactId>aws-docdb-messagevalidator</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>aws-docdb-messagevalidator</name>
 	<description>Demo project for Spring Boot</description>
 

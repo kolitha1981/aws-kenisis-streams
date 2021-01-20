@@ -1,5 +1,6 @@
 package com.lambda.mongodb.mongodbpersister.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.lambda.mongodb.mongodbpersister.dao.MessageRepository;
 import com.lambda.mongodb.mongodbpersister.exception.MessageNotFoundException;
 import com.lambda.mongodb.mongodbpersister.exception.MessageProcessingFailedException;
 import com.lambda.mongodb.mongodbpersister.model.Message;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -32,6 +34,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
+	@HystrixCommand(fallbackMethod = "geEmptySavedList")
 	public List<Message> save(List<Message> messages) {
 		final List<Message> savedListOfMessages = this.messageRepository.saveAll(messages);
 		final HttpHeaders httpHeaders = new HttpHeaders();
@@ -51,6 +54,10 @@ public class MessageServiceImpl implements MessageService {
 			throw new MessageProcessingFailedException(e.getMessage(), e);
 		}
 
+	}
+	
+	private List<Message> geEmptySavedList(){
+		return Collections.emptyList();
 	}
 
 	@Override
